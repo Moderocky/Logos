@@ -83,3 +83,24 @@ Everything is derived from this:
 ### Stephen Cole Kleene's Strong Logic of Indeterminacy
 
 A [logic](https://en.wikipedia.org/wiki/Three-valued_logic) with three values; TRUE (1), UNKNOWN (0) and FALSE (-1).
+
+## Extension Frameworks
+
+This library supplies the possibility of extension frameworks: things that are not real logics but behave like one,
+e.g. when wrapped around an existing logic.
+
+These could be logic categories (e.g. substructural, predicates, modality) which supply new base operators,
+or tamper with semantics of existing ones, but _only_ to other logics.
+
+### Operator Logic
+
+Functional, deferred evaluation operators are supplied as a 'logic'.
+
+This is not a real 'logic' in itself: it constructs chains of operators and instructions with placeholder values.
+These can then be evaluated later by feeding real values into them, e.g. feeding `true` and `false` into `a & ¬b`.
+
+Operator logic can be used on its own (with partial functionality) or wrapped around a real logic in order to use its
+features, e.g. true/false states and numeric calculation.
+
+Operation chains are constructed in the usual way (e.g. `falsity().implies(falsity())`, `input(0).and(input(1))`)
+and can then be evaluated with `operator.evaluate(inputs[0..n])` to produce a value of the same form as the input.
