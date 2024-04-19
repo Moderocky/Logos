@@ -1,7 +1,12 @@
 package org.valross.logic.operator;
 
 import org.valross.constantine.Constant;
+import org.valross.constantine.RecordConstant;
+import org.valross.logic.Logic;
 import org.valross.logic.Value;
+
+import java.lang.constant.Constable;
+import java.util.function.Supplier;
 
 @FunctionalInterface
 @SuppressWarnings("unchecked")
@@ -58,5 +63,40 @@ public interface Operator<Type extends Value> extends Value, Constant.UnitConsta
     }
 
     Type evaluate(Type... propositions);
+
+}
+
+record Wrapper<Type extends Value>(Supplier<String> printer, Operator<Type> operator)
+    implements Operator<Type>, RecordConstant {
+
+    Wrapper(String string, Operator<Type> operator) {
+        this(() -> string, operator);
+    }
+
+    @Override
+    public OperatorLogic<Type> getLogic() {
+        return operator.getLogic();
+    }
+
+    @Override
+    @SafeVarargs
+    public final Type evaluate(Type... propositions) {
+        return operator.evaluate(propositions);
+    }
+
+    @Override
+    public Constable[] serial() throws Throwable {
+        return RecordConstant.super.serial();
+    }
+
+    @Override
+    public Class<?>[] canonicalParameters() {
+        return RecordConstant.super.canonicalParameters();
+    }
+
+    @Override
+    public String toString() {
+        return printer.get();
+    }
 
 }
