@@ -50,6 +50,28 @@ The following are not strictly used but may be referenced.
 | NECESSARY   | `□`    | Necessity.        |
 | POSSIBLe    | `◇`    | Possibility.      |
 
+## Order of Operations
+
+The programmatic structure should prevent any confusion about order of operations.
+
+Any operator method acting _on_ a thing (`a.and(b)`) will take its subject as its first argument,
+and its object as its second argument (`a & b`).
+
+Operator methods return the **combined** instruction, so `a.and(b).and(c)` will be evaluated in order:
+- `a & b`
+- `... & c`
+This is equivalent to `(a & b) & c`.
+
+If the alternative is desired, the combination should be the operator's object rather than its subject:
+`a.and(b.and(c))`, which will produce `a & (b & c)`.
+
+> **Note**: 
+> For those who are unfamiliar, chained methods (`first().second().third()`) evaluate from left to right.
+>
+> Arguments evaluate before their method call (`third(second(first()))`).
+> 
+> Multiple arguments in the same method effectively evaluate simultaneously.
+
 ## Supplied Frameworks
 
 ### George Boole's Boolean Logic
@@ -99,8 +121,15 @@ Functional, deferred evaluation operators are supplied as a 'logic'.
 This is not a real 'logic' in itself: it constructs chains of operators and instructions with placeholder values.
 These can then be evaluated later by feeding real values into them, e.g. feeding `true` and `false` into `a & ¬b`.
 
+#### Construction
+
 Operator logic can be used on its own (with partial functionality) or wrapped around a real logic in order to use its
 features, e.g. true/false states and numeric calculation.
 
 Operation chains are constructed in the usual way (e.g. `falsity().implies(falsity())`, `input(0).and(input(1))`)
 and can then be evaluated with `operator.evaluate(inputs[0..n])` to produce a value of the same form as the input.
+
+#### Printing
+
+Operators are designed to be printed out.
+Printing an operator will display its variable tokens and connectives (e.g. `input(0).implies(input(1)).not()` is `¬(a → b)`).
